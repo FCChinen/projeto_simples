@@ -1,37 +1,15 @@
 from fastapi import HTTPException
 from models.login_request import UserInDB
-from typing import Dict
+from sqlalchemy.orm import Session
 import datetime
 import jwt
-import hashlib
+from common import hash_password
+from sql_app.crud import get_user_by_username
 
 
 with open('./pem_files/secret.txt', 'r') as f:
     SECRET_KEY = f.read()
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
-
-
-def get_db_users() -> Dict:
-    # TODO: Implementar acesso a banco
-    return {
-        "felipechinen": {
-            "username": "felipechinen",
-            "name": "Felipe Chinen",
-            "email": "fcchinen@gmwail.com",
-            "hashed_password": "9436a4a7d2912b886a2a8ba46ac9085773132d13eac8c39cee6870e74bb779e9",
-            "status": False
-            }
-    }
-
-
-def hash_password(password: str):
-    #  TODO: Criar um gerador de salt para cada usuário,
-    # para melhoria de segurança
-    with open("./pem_files/user_pwd_secret.txt", "r") as f:
-        salt = f.read()
-    pwd = salt+password
-    pwd = pwd.encode('ascii')
-    return hashlib.sha256(pwd).hexdigest()
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 
 def create_access_token(data: UserInDB):
@@ -50,14 +28,18 @@ def check_access_token(token: str) -> str:
         print(e)
 
 
-def get_access_token(login: str, password: str):
-    user_dict = get_db_users().get(login)
+def get_access_token(db: Session, username: str, password: str):
+    user_dict = get_user_by_username(db=db, username=username)
     if not user_dict:
-        raise HTTPException(status_code=400, detail="Invalid username or password")    
+        raise HTTPException(status_code=400,
+                            detail="Invalid username or password")
+    user_dict = user_dict.__dict__
+    print(user_dict)
     user = UserInDB(**user_dict)
     hashed_password = hash_password(password)
     if user.hashed_password != hashed_password:
-        raise HTTPException(status_code=400, detail="Invalid username or password")
+        raise HTTPException(status_code=400,
+                            detail="Invalid username or password")
     print("passou por aqui")
     return {
         "access_token": create_access_token(user),
