@@ -24,3 +24,17 @@ Rodar o FastAPI:
     python main.py
 
     O FastAPI cria uma documentação web automaticamente, no qual você pode utilizar as APIs pelo navegador, bastando acessar: 127.0.0.1:8000/docs
+
+Endpoints:
+
+POST /token :
+    Esse endpoint faz a autenticação, verificando no banco de dados se o usuário passado é válido, utilizando uma hash SHA-256 gerada a partir do arquivo ./pem_files/user_pwd_secret.txt
+    Além disso, essa authenticação expira após 60 minutos.
+
+POST /users :
+    Endpoint para inserir novos usuários no banco de dados.
+    Como input necessita de um login, senha e se o usuário é válido. É feito um hash da senha(Conforme descrito anteriormente) e então armazenada no banco de dados.
+
+GET /users :
+    Esse endpoint retorna uma lista que contém todos os usuários do banco de dados(username, is_valid, email). E foi utilizado basicamente para verificar se a criação está ocorrendo de maneira correta.
+

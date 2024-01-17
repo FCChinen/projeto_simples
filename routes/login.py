@@ -40,7 +40,6 @@ def get_access_token(db: Session, username: str, password: str):
     if user.hashed_password != hashed_password:
         raise HTTPException(status_code=400,
                             detail="Invalid username or password")
-    print("passou por aqui")
     return {
         "access_token": create_access_token(user),
         "token_type": "bearer"
