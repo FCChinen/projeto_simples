@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String, Date, DECIMAL
 
 import sqlite3
 
@@ -27,8 +27,34 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
 
-Base.metadata.create_all(bind=engine)
+class Movies(Base):
+    __tablename__ = "movies"
 
+    movie_id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True)
+    genre = Column(Integer)
+    launch_date = Column(Date)
+
+
+class MovieDescriptions(Base):
+    __tablename__ = "movie_descriptions"
+
+    movie_description_id = Column(Integer, primary_key=True)
+    fk_movie_id = Column(Integer)
+    score = Column(DECIMAL)
+    cast = Column(String)
+    director = Column(String)
+    synopsis = Column(String)
+
+
+class GenreType(Base):
+    __tablename__ = "genre_types"
+
+    genre_id = Column(Integer, primary_key=True)
+    genre_name = Column(String)
+
+
+Base.metadata.create_all(bind=engine)
 
 conexao = sqlite3.connect('./sql_app/sql_app.db')
 

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import datetime
 import jwt
 from common import hash_password
-from sql_app.crud import get_user_by_username
+from routes.user import get_user_by_username
 
 
 with open('./pem_files/secret.txt', 'r') as f:

@@ -4,12 +4,15 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from typing import Annotated
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from routes.login import get_access_token, check_access_token
+from routes.genre_type import insert_genre_type, get_genre_types
 from sqlalchemy.orm import Session
+
+from models.genre_type_response import GenreType
 
 from sql_app.database import SessionLocal, engine
 import sql_app.models
 import sql_app.schemas
-import sql_app.crud
+import routes.user
 
 sql_app.models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
@@ -49,22 +52,39 @@ async def auth(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
           tags=["user management"],
           response_model=sql_app.schemas.User,
           dependencies=[Depends(verify_token)])
-def create_user(user: sql_app.schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = sql_app.crud.get_user_by_username(db, username=user.username)
+async def create_user(user: sql_app.schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = routes.user.get_user_by_username(db, username=user.username)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return sql_app.crud.create_user(db=db, user=user)
+    return routes.user.create_user(db=db, user=user)
 
 
-@app.get("/users/", response_model=list[sql_app.schemas.User],
+@app.get("/users/",
+         response_model=list[sql_app.schemas.User],
          tags=["user management"],
          dependencies=[Depends(verify_token)])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = sql_app.crud.get_users(db, skip=skip, limit=limit)
+async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = routes.user.get_users(db, skip=skip, limit=limit)
     for user in users:
         print(user.__dict__)
     return users
 
+
+@app.get("/genre_type/",
+        response_model=list[GenreType],
+        tags=["genre management"],
+        dependencies=[Depends(verify_token)])
+async def add_genre(skip: int = 0,
+                    limit: int = 10,
+                    db: Session = Depends(get_db)):
+    return get_genre_types(db=db, skip=skip, limit=limit)
+
+@app.post("/genre_type/",
+          response_model=GenreType,
+          tags=["genre management"],
+          dependencies=[Depends(verify_token)])
+async def add_genre(genre_name: str, db: Session = Depends(get_db)):
+    return insert_genre_type(db=db, genre_name=genre_name)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
