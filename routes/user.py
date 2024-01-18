@@ -22,3 +22,34 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+def delete_user(db: Session, user_id: int):
+    db_object = db.query(models.User)\
+                    .filter(models.User.id == user_id)\
+                    .first()
+    if not db_object:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+    db.delete(db_object)
+    db.commit()
+    return db_object.__dict__
+
+def update_user(db: Session, user: schemas.UpdateUser):
+    db_object = db.query(models.User)\
+                .filter(models.User.id == user.id)\
+                .first()
+    if not db_object:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+    if user.__dict__.get('email', None) is not None:
+        db_object.email = user.__dict__.get('email')
+    if user.__dict__.get('username', None) is not None:
+        db_object.username = user.__dict__.get('username')
+    if user.__dict__.get('password', None) is not None:
+        db_object.hashed_password = hash_password(user.__dict__.get('password'))
+    db.commit()
+    return db_object

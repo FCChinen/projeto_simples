@@ -69,6 +69,23 @@ async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_
     users = routes.user.get_users(db, skip=skip, limit=limit)
     return users
 
+@app.delete("/users",
+         response_model=sql_app.schemas.User,
+         tags=["user management"],
+         dependencies=[Depends(verify_token)])
+async def delete_users(id: int, db: Session = Depends(get_db)):
+    users = routes.user.delete_user(db=db, user_id=id)
+    return users
+
+@app.put("/users",
+         response_model=sql_app.schemas.User,
+         tags=["user management"],
+         dependencies=[Depends(verify_token)])
+async def update_user(user: sql_app.schemas.UpdateUser,
+                       db: Session = Depends(get_db)):
+    users = routes.user.update_user(user=user, db=db)
+    return users
+
 
 @app.get("/genre_type",
         response_model=list[GenreType],

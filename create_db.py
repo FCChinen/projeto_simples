@@ -26,7 +26,6 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True)
     hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
 
 
 class GenreType(Base):
@@ -78,11 +77,10 @@ conexao = sqlite3.connect('./sql_app/sql_app.db')
 
 cursor = conexao.cursor()
 
-cursor.execute("INSERT INTO users (username, email, hashed_password, is_active) VALUES (?, ?, ?, ?)",
+cursor.execute("INSERT INTO users (username, email, hashed_password) VALUES (?, ?, ?)",
             ('felipechinen',
             'fcchinen@gmail.com',
-            '9436a4a7d2912b886a2a8ba46ac9085773132d13eac8c39cee6870e74bb779e9',
-            True))
+            '9436a4a7d2912b886a2a8ba46ac9085773132d13eac8c39cee6870e74bb779e9'))
 
 cursor.execute("INSERT INTO genre_types (genre_name) VALUES ('invalid_genre')")
 

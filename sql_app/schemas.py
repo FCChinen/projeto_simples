@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 
 
 class UserBase(BaseModel):
@@ -6,12 +7,20 @@ class UserBase(BaseModel):
 
 
 class User(UserBase):
+    id: int
     username: str
-    is_active: bool
 
     class Config:
         orm_mode = True
 
 
-class UserCreate(User):
+class UserCreate(UserBase):
+    username: str
     password: str
+
+
+class UpdateUser(BaseModel):
+    id: int
+    email: Optional[str] = Field(None)
+    username: Optional[str] = Field(None)
+    password: Optional[str] = Field(None)
