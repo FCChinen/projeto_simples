@@ -34,7 +34,6 @@ def get_access_token(db: Session, username: str, password: str):
         raise HTTPException(status_code=400,
                             detail="Invalid username or password")
     user_dict = user_dict.__dict__
-    print(user_dict)
     user = UserInDB(**user_dict)
     hashed_password = hash_password(password)
     if user.hashed_password != hashed_password:

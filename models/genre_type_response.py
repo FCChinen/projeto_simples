@@ -2,5 +2,8 @@ from pydantic import BaseModel
 
 
 class GenreType(BaseModel):
-    genre_type_id: int
-    genre_type_description: str
+    genre_id: int
+    genre_name: str
+
+    class Config:
+        orm_mode = True
