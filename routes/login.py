@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 import datetime
 import jwt
 from common import hash_password
-from sql_app.crud import get_user_by_username
+from routes.user import get_user_by_username
 
 
 with open('./pem_files/secret.txt', 'r') as f:
@@ -34,7 +34,6 @@ def get_access_token(db: Session, username: str, password: str):
         raise HTTPException(status_code=400,
                             detail="Invalid username or password")
     user_dict = user_dict.__dict__
-    print(user_dict)
     user = UserInDB(**user_dict)
     hashed_password = hash_password(password)
     if user.hashed_password != hashed_password:

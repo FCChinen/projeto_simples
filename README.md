@@ -38,3 +38,14 @@ POST /users :
 GET /users :
     Esse endpoint retorna uma lista que contém todos os usuários do banco de dados(username, is_valid, email). E foi utilizado basicamente para verificar se a criação está ocorrendo de maneira correta.
 
+POST /genre_type:
+    Adiciona um novo tipo de genero na tabela GenreType no banco de dados. Essa tabela contém um id e um nome e será utilizado como tabela lookup para os generos dos filmes
+
+GET /genre_type:
+    Obtém todos os gêneros adicionados na tabela GenreType
+
+PUT /genre_type:
+    Modifica o gênero de uma tupla do banco de dados. Deve-se passar o genre_id do gênero e seu novo nome.
+
+DELETE /genre_type:
+    Deleta 1 ou mais generos se tiverem nomes duplicados no banco. Pode-se passar tanto o genre_id quanto o genre_name.
