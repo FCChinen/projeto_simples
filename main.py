@@ -1,15 +1,15 @@
 import uvicorn
 
 from fastapi import FastAPI, Depends, HTTPException, status
-from typing import Annotated
+from typing import Annotated, Union
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from routes.login import get_access_token, check_access_token
 from routes.genre_type import insert_genre_type, get_genre_types, delete_genre_types, update_genre_types
-from routes.movies import add_movie
+from routes.movies import add_movie, get_movies, delete_movie, get_full_movie, update_movie, mod_movie_desc
 from sqlalchemy.orm import Session
 
 from models.genre_type_response import GenreType
-from models.movies import MovieDescription, Movies
+from models.movies import MovieDescription, Movies, MoviesResponse, FullMovie, ModifyMovies, ModifyMovieDescriptionResponse, ModifyMovieDescription
 
 from sql_app.database import SessionLocal, engine
 import sql_app.models
@@ -67,8 +67,6 @@ async def create_user(user: sql_app.schemas.UserCreate, db: Session = Depends(ge
          dependencies=[Depends(verify_token)])
 async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = routes.user.get_users(db, skip=skip, limit=limit)
-    for user in users:
-        print(user.__dict__)
     return users
 
 
@@ -115,12 +113,54 @@ async def update_genre(genre_id: int,
     return update_genre_types(genre_id, genre_name, db)
 
 @app.post("/movie",
-          response_model=Movies,
+          response_model=MoviesResponse,
           tags=["movie management"],
           dependencies=[Depends(verify_token)])
 async def add_movies(movie: Movies,
+                     movie_description: MovieDescription,
                        db: Session = Depends(get_db)):
-    return add_movie(movie, db)
+    return add_movie(movie, movie_description, db)
+
+@app.get("/movie",
+         response_model=list[MoviesResponse],
+         tags=["movie management"],
+         dependencies=[Depends(verify_token)])
+async def read_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    movies = get_movies(db=db, skip=skip, limit=limit)
+    return movies
+
+@app.put("/movie",
+         response_model=MoviesResponse,
+         tags=["movie management"],
+         dependencies=[Depends(verify_token)])
+async def modify_movie(movie: ModifyMovies, db: Session = Depends(get_db)):
+    return update_movie(movie=movie, db=db)
+
+
+@app.put("/movie_description",
+         response_model=ModifyMovieDescriptionResponse,
+         tags=["movie management"],
+         dependencies=[Depends(verify_token)])
+async def modify_movie(movie: ModifyMovieDescription, db: Session = Depends(get_db)):
+    return mod_movie_desc(movie=movie, db=db)
+
+
+@app.delete("/full_movie",
+         response_model=FullMovie,
+         tags=["movie management"],
+         dependencies=[Depends(verify_token)])
+async def remove_movies(movie_id: int, db: Session = Depends(get_db)):
+    movies = delete_movie(movie_id, db=db)
+    return movies
+
+
+@app.get("/full_movie",
+         response_model=FullMovie,
+         tags=["movie management"],
+         dependencies=[Depends(verify_token)])
+async def full_movies(movie_id: int, db: Session = Depends(get_db)):
+    return get_full_movie(movie_id, db=db)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
