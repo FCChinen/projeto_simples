@@ -136,7 +136,7 @@ async def modify_movie(movie: ModifyMovieDescription, db: Session = Depends(get_
     return mod_movie_desc(movie=movie, db=db)
 
 @app.post("/full_movie",
-          response_model=MoviesResponse,
+          response_model=FullMovie,
           tags=["movie management"],
           dependencies=[Depends(verify_token)])
 async def add_movies(movie: Movies,

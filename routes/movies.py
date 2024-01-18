@@ -8,7 +8,6 @@ def add_movie(movies: Movies, movie_description: MovieDescription, db: Session):
     genre_obj = db.query(models.GenreType)\
         .filter(models.GenreType.genre_id == movies.fk_genre_id)\
         .first()
-    print(genre_obj)
     if not genre_obj:
         raise HTTPException(
             status_code=422,
@@ -30,6 +29,7 @@ def add_movie(movies: Movies, movie_description: MovieDescription, db: Session):
     db.add(db_movie)
     db.commit()
     db.refresh(db_movie)
+    movie = db_movie.__dict__.copy()
     db_movie_description = models.MovieDescriptions(
         fk_movie_id=db_movie.movie_id,
         score=movie_description.score,
@@ -40,8 +40,7 @@ def add_movie(movies: Movies, movie_description: MovieDescription, db: Session):
     db.add(db_movie_description)
     db.commit()
     db.refresh(db_movie_description)
-    
-    return db_movie
+    return movie | db_movie_description.__dict__
 
 
 def get_movies(db: Session, skip: int = 0, limit: int = 100):
