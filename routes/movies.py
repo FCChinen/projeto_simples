@@ -43,8 +43,14 @@ def add_movie(movies: Movies, movie_description: MovieDescription, db: Session):
     return movie | db_movie_description.__dict__
 
 
-def get_movies(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Movies).offset(skip).limit(limit).all()
+def get_movies(db: Session, skip: int = 0, limit: int = 100, genre_id: int = 0):
+    if genre_id == 0:
+        return db.query(models.Movies).offset(skip).limit(limit).all()
+    else:
+        db_result = db.query(models.Movies)\
+            .filter(models.Movies.fk_genre_id == genre_id)\
+            .offset(skip).limit(limit).all()
+        return db_result
 
 
 def delete_movie(movie_id: int, db: Session):

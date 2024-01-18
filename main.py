@@ -133,8 +133,8 @@ async def update_genre(genre_id: int,
          response_model=list[MoviesResponse],
          tags=["movie management"],
          dependencies=[Depends(verify_token)])
-async def read_movies(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    movies = get_movies(db=db, skip=skip, limit=limit)
+async def read_movies(genre_id: int = 0, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    movies = get_movies(db=db, skip=skip, limit=limit, genre_id=genre_id)
     return movies
 
 @app.put("/movie",

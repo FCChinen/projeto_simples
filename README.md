@@ -52,6 +52,7 @@ DELETE /genre_type:
 
 GET /movie
     Lê do banco, todos os filmes do banco(Contém filtro de offset e limit). Volta apenas as informações gerais do filme(Nome, Data de lançamento e o id do gênero)
+    Se passar o parametro genre_id diferente de 0, o banco irá procurar os filmes daquele gênero, senão irá pegar todos os filmes.
 
 GET /full_movie
     Lê do banco o filme do id que você passar. Retorna todas as informações do filme(Contendo nome, data de lançamento, id do gênero, nota, elenco, diretor e sinopse).
