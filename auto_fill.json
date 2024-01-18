@@ -1,0 +1,67 @@
+[
+    {
+        "movie": {
+            "name": "Matrix",
+            "launch_date": "1999-03-24",
+            "genre_name": "acao"
+        },
+        "movie_description": {
+            "score": 8.7,
+            "cast": "Keanu Reeves",
+            "director": "Lana Wachowski",
+            "synopsis": "Um hacker aprende com os misteriosos rebeldes sobre a verdadeira natureza de sua realidade e seu papel na guerra contra seus controladores."
+        }
+    },
+    {
+        "movie": {
+            "name": "O Iluminado",
+            "launch_date": "1980-05-23",
+            "genre_name": "terror"
+        },
+        "movie_description": {
+            "score": 8.4,
+            "cast": "Jack Nicholson",
+            "director": "Stanley Kubrick",
+            "synopsis": "Uma família se dirige a um hotel isolado para o inverno, onde uma presença sinistra influencia a violência do pai, enquanto seu filho psíquico vê presságios horríveis do passado e do futuro."
+        }
+    },
+    {
+        "movie": {
+            "name": "O Exorcista",
+            "launch_date": "1973-12-26",
+            "genre_name": "terror"
+        },
+        "movie_description": {
+            "score": 8.4,
+            "cast": "Ellen Burstyn",
+            "director": "William Friedkin",
+            "synopsis": "Quando uma adolescente é possuída por uma entidade misteriosa, sua mãe busca a ajuda de um padre, que também é um psiquiatra, para salvar sua filha."
+        }
+    },
+    {
+        "movie": {
+            "name": "Donnie Darko",
+            "launch_date": "2001-01-19",
+            "genre_name": "misterio"
+        },
+        "movie_description": {
+            "score": 8.0,
+            "cast": "Jake Gyllenhaal",
+            "director": "Richard Kelly",
+            "synopsis": "Um adolescente é atormentado com visões dum homem num terno de coelho quem o manipula a fazer crimes."
+        }
+    },
+    {
+        "movie": {
+            "name": "Senhor dos Anéis",
+            "launch_date": "2001-12-10",
+            "genre_name": "aventura"
+        },
+        "movie_description": {
+            "score": 8.0,
+            "cast": "Elijah Wood",
+            "director": "Peter Jackson",
+            "synopsis": "Um manso hobbit do Condado e oito companheiros partem em uma jornada para destruir o poderoso Um Anel e salvar a Terra-média das Trevas."
+        }
+    }
+]
