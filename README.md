@@ -49,3 +49,19 @@ PUT /genre_type:
 
 DELETE /genre_type:
     Deleta 1 ou mais generos se tiverem nomes duplicados no banco. Pode-se passar tanto o genre_id quanto o genre_name.
+
+GET /movie
+    Lê do banco, todos os filmes do banco(Contém filtro de offset e limit). Volta apenas as informações gerais do filme(Nome, Data de lançamento e o id do gênero)
+
+GET /full_movie
+    Lê do banco o filme do id que você passar. Retorna todas as informações do filme(Contendo nome, data de lançamento, id do gênero, nota, elenco, diretor e sinopse).
+
+POST /full_movie
+    Adiciona no banco um filme completo.
+    Esse endpoint popula 2 tabelas, uma que contém apenas informações gerais do filme e outra que contém informações de descrição.
+
+DELETE /full_movie
+    Remove do banco um filme. Deve-se passar o id do filme para removê-lo. Ele remove também a descrição desse filme.
+
+PUT /movie_description
+    Modifica apenas a descrição de um filme. Para isso, deve-se passar o movie_id do filme.

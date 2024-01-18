@@ -112,15 +112,6 @@ async def update_genre(genre_id: int,
                        db: Session = Depends(get_db)):
     return update_genre_types(genre_id, genre_name, db)
 
-@app.post("/movie",
-          response_model=MoviesResponse,
-          tags=["movie management"],
-          dependencies=[Depends(verify_token)])
-async def add_movies(movie: Movies,
-                     movie_description: MovieDescription,
-                       db: Session = Depends(get_db)):
-    return add_movie(movie, movie_description, db)
-
 @app.get("/movie",
          response_model=list[MoviesResponse],
          tags=["movie management"],
@@ -144,6 +135,14 @@ async def modify_movie(movie: ModifyMovies, db: Session = Depends(get_db)):
 async def modify_movie(movie: ModifyMovieDescription, db: Session = Depends(get_db)):
     return mod_movie_desc(movie=movie, db=db)
 
+@app.post("/full_movie",
+          response_model=MoviesResponse,
+          tags=["movie management"],
+          dependencies=[Depends(verify_token)])
+async def add_movies(movie: Movies,
+                     movie_description: MovieDescription,
+                       db: Session = Depends(get_db)):
+    return add_movie(movie, movie_description, db)
 
 @app.delete("/full_movie",
          response_model=FullMovie,
