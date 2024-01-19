@@ -494,7 +494,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/movie",
+					"raw": "http://127.0.0.1:8000/movie?genre_id=0",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -505,6 +505,12 @@
 					"port": "8000",
 					"path": [
 						"movie"
+					],
+					"query": [
+						{
+							"key": "genre_id",
+							"value": "0"
+						}
 					]
 				}
 			},

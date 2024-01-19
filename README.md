@@ -25,6 +25,11 @@ Rodar o FastAPI:
 
     O FastAPI cria uma documentação web automaticamente, no qual você pode utilizar as APIs pelo navegador, bastando acessar: 127.0.0.1:8000/docs
 
+Popular o banco de dados:
+    Para popular o banco de dados utilizando a API, foi criado um arquivo com o nome auto_fill.py, para executa-lo basta utilizar:
+    python auto_fill.py
+
+
 Endpoints:
 
 POST /token :
